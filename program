@@ -1,0 +1,72 @@
+using Classes;
+using System;
+using Лаба_11;
+using static Classes.Person;
+
+static void Swap<T>(T[] a, int i, int j)
+{
+    T z = a[i];
+    a[i] = a[j];
+    a[j] = z;
+}
+static F[] Delete<F>(F[]a, int i)
+{
+    F[] result = new F[a.Length - 1];
+    Array.Copy(a, 0, result, 0, i);
+    Array.Copy(a,i+1,result, i, a.Length-i-1);
+    return result;
+}
+
+//List<int> list = new List<int>();
+double[] array = { 1, 2, 3, 4, 5 };
+
+double[] array1 = { 1.3, 4.5, 3.7 };
+string[] array3 = { "яблоко","груша","апельсин"};
+
+double[] array11  = Delete(array, 3);
+Console.WriteLine(string.Join(" ",array11));
+
+Swap(array, 2, 3);
+Console.WriteLine(string.Join(" ", array));
+
+Swap<string>(array3, 1, 2);
+Console.WriteLine(String.Join(" ", array3));
+Person[] r ={
+        new Person() {Name ="Григорий", Surname = "Лепс",Gender = 'm', BirthDay = new DateTime (1962,06, 16)},
+        new Person() {Name = "Надежда", Surname = "Бабкина", Gender = 'f', BirthDay = new DateTime(1950,3,19)},
+        new Person() {Name = "Михаил", Surname = "Шуфутинский", Gender = 'm',BirthDay = new DateTime(1948, 5,13)}
+};
+Array.Sort(r);
+Array.ForEach(r, Console.WriteLine);
+Swap(r, 0, 1);
+Array.ForEach(r, Console.WriteLine);
+
+Person[] r1 = Delete(r, 1);
+Array.ForEach(r1, Console.WriteLine);
+//2а
+if (r[0].CompareTo(r[1])<0)
+{
+    Console.WriteLine($"{r[0].Name} < {r[1].Name}");
+}
+else
+{
+    Console.WriteLine($"{r[0].Name} > {r[1].Name}");
+}
+//2b
+Array.Sort(r, new PersonAgeComparator());
+Array.ForEach(r, Console.WriteLine);
+
+Array.Sort(r, new PersonGenderComparator());
+Array.ForEach(r, Console.WriteLine);
+
+static Person GetMax(Person[] people, IComparer<Person> comparer)
+{
+    Array.Sort(people, comparer);
+    return people[people.Length - 1];
+}
+Person oldestPerson = GetMax(r, new PersonAgeComparator());
+Person lastMale = GetMax(r, new PersonGenderComparator());
+//3
+MyPair<Person, Person> pair1 = new MyPair<Person, Person>(r[0], r[1]);
+Console.WriteLine("Первый из пары: {0} {1}", pair1.first.Name, pair1.first.Surname);
+Console.WriteLine("Второй из пары: {0} {1}", pair1.second.Name, pair1.second.Surname);
