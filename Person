@@ -1,0 +1,77 @@
+using System;
+using System.Collections.Generic;
+
+namespace Classes
+{
+    class Person : IComparable<Person>
+    {
+        public string Surname { get; set; }
+        public string Name { get; set; }
+        public DateTime BirthDay { get; set; }
+
+        private char gender;
+        public char Gender
+        {
+            get { return gender; }
+            set { if (value == 'M' | value == 'F' | value == 'm' | value == 'f') gender = value; }
+        }
+
+        public Person()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return Name + " " + Surname + " " + BirthDay + " " + gender;
+        }
+
+        public virtual void Print()
+        {
+            Console.WriteLine($"Имя: {Name}  Фамилия: {Surname}  Возраст: {Age()} Пол: {gender}");
+        }
+
+        public virtual void Read()
+        {
+            Console.WriteLine("Введите имя: ");
+            Name = Console.ReadLine();
+
+            Console.WriteLine("Введите фамилию: ");
+            Surname = Console.ReadLine();
+
+            Console.WriteLine("Введите дату рождения: ");
+            BirthDay = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Введите пол: ");
+            Gender = char.Parse(Console.ReadLine());
+        }
+
+        public int Age()
+        {
+            int a = DateTime.Today.Year - BirthDay.Year;
+            if (BirthDay.Month > DateTime.Today.Month || (BirthDay.Month == DateTime.Today.Month && BirthDay.Day > DateTime.Today.Day))
+                a--;
+            return a;
+        }
+
+        public int CompareTo(Person? other)
+        {
+            return this.Name.CompareTo(other.Name);
+        }
+
+        public class PersonAgeComparator : IComparer<Person>
+        {
+            public int Compare(Person? x, Person? y)
+            {
+                return x.Age() - y.Age();
+            }
+        }
+        public class PersonGenderComparator : IComparer<Person>
+        {
+            public int Compare(Person? x, Person? y)
+            {
+                return x.Gender.CompareTo(y.Gender);
+            }
+        }
+    }
+}
